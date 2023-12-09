@@ -6,13 +6,14 @@ import { Navbar } from "@/components/navbar";
 import { Typography } from "@/constants/Typography";
 import { Phone } from "@/interface";
 import { getPriceRange } from "@/utils";
-import { Button, Center, Grid, Image, Select, Skeleton, Stack, Text, TextInput } from "@mantine/core";
+import { Button, Center, Grid, Group, Image, Select, Skeleton, Stack, Text, TextInput } from "@mantine/core";
 import axios from "axios";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdDoubleArrow, MdSignalWifiStatusbarConnectedNoInternet1 } from "react-icons/md"
 import { ImFileEmpty } from "react-icons/im"
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai"
 
 export default function Result() {
 
@@ -24,7 +25,9 @@ export default function Result() {
 
     const [phones, setPhones] = useState<Phone[]>([]);
 
-    const [pagination, setPagination] = useState<{}>()
+    const [pagination, setPagination] = useState({
+        next: null, prev: null
+    })
 
     const getData = async (page?: number | null) => {
 
@@ -81,30 +84,50 @@ export default function Result() {
                     <>
                         {
                             phones.length > 0 ?
-                                <Grid gutter="xl">
-                                    {
-                                        phones.map(({ image_url, model, comparisons, id }) => (
-                                            <Grid.Col span={3} key={id}>
-                                                <div className="bg-white w-full rounded-md  overflow-hidden">
-                                                    <div className="h-[250px]">
-                                                        <img
-                                                            src={image_url}
-                                                            className="w-full h-full object-cover object-top"
-                                                            alt=""
-                                                        />
+                                <>
+                                    <Grid gutter="xl">
+                                        {
+                                            phones.map(({ image_url, model, comparisons, id }) => (
+                                                <Grid.Col span={3} key={id}>
+                                                    <div className="bg-white w-full rounded-md  overflow-hidden">
+                                                        <div className="h-[250px]">
+                                                            <img
+                                                                src={image_url}
+                                                                className="w-full h-full object-cover object-top"
+                                                                alt=""
+                                                            />
+                                                        </div>
+                                                        <div className="p-4 flex flex-col gap-2">
+                                                            <p>{model!.name}</p>
+                                                            <p className="text-xl" style={{ fontFamily: Typography.heading }}>{getPriceRange(comparisons)}</p>
+                                                            <Button variant="default" rightIcon={<MdDoubleArrow />} component={Link} href={`/phone/${id}`}>
+                                                                View
+                                                            </Button>
+                                                        </div>
                                                     </div>
-                                                    <div className="p-4 flex flex-col gap-2">
-                                                        <p>{model!.name}</p>
-                                                        <p className="text-xl" style={{ fontFamily: Typography.heading }}>{getPriceRange(comparisons)}</p>
-                                                        <Button variant="default" rightIcon={<MdDoubleArrow />} component={Link} href={`/phone/${id}`}>
-                                                            View
-                                                        </Button>
-                                                    </div>
-                                                </div>
-                                            </Grid.Col>
-                                        ))
-                                    }
-                                </Grid> :
+                                                </Grid.Col>
+                                            ))
+                                        }
+                                    </Grid>
+                                    <Group mt="30px" position="center">
+                                        <Button
+                                            leftIcon={<AiOutlineArrowLeft />}
+                                            disabled={!pagination.prev}
+                                            className="bg-indigo-800 hover:bg-indigo-700 disabled:bg-inherit"
+                                            onClick={() => getData(pagination.prev)}
+                                        >
+                                            Previous
+                                        </Button>
+                                        <Button
+                                            rightIcon={<AiOutlineArrowRight />}
+                                            disabled={!pagination.next}
+                                            className="bg-indigo-800 hover:bg-indigo-700 disabled:bg-inherit"
+                                            onClick={() => getData(pagination.next)}
+                                        >
+                                            Next
+                                        </Button>
+                                    </Group>
+                                </> :
                                 <div className="h-[70vh] flex flex-col items-center justify-center gap-5">
                                     <ImFileEmpty size="70px" />
                                     <Text size="lg" style={{ fontFamily: Typography.heading }}>No phone with keyword &quot;{query}&quot; found 😕</Text>
