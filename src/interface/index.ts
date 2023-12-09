@@ -14,5 +14,5 @@ export interface Phone {
     image_url: string;
     storage: string;
     comparisons: Comparison[];
-    model?: Model
+    model: Model
 }

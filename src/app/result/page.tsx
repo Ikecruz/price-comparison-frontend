@@ -58,7 +58,7 @@ export default function Result() {
         <Navbar />
 
         <div className="h-96 my_container flex flex-col items-center justify-center gap-10">
-            <p className="text-2xl" style={{ fontFamily: Typography.heading }}>Showing Result for &quot;{query}&quot;</p>
+            <p className="text-2xl" style={{ fontFamily: Typography.heading }}>Showing Results for &quot;{query}&quot;</p>
             <form className="flex gap-5 w-full">
                 <TextInput
                     className="flex-1"
