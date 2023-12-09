@@ -59,22 +59,6 @@ export default function Result() {
 
         <div className="h-96 my_container flex flex-col items-center justify-center gap-10">
             <p className="text-2xl" style={{ fontFamily: Typography.heading }}>Showing Results for &quot;{query}&quot;</p>
-            <form className="flex gap-5 w-full">
-                <TextInput
-                    className="flex-1"
-                    placeholder="Filter results"
-                    variant="filled"
-                />
-                <Select
-                    data={[]}
-                    placeholder="Sort by price"
-                    className="flex-1"
-                    variant="filled"
-                />
-                <Button className="bg-indigo-800 hover:bg-indigo-700">
-                    Filter
-                </Button>
-            </form>
         </div>
 
         <div className="border border-t-[#DEE2E6] bg-[#f1f3f5]">
